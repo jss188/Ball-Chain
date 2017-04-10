@@ -1,3 +1,16 @@
+# ===================================
+# Michael Starling's gitignore used for Outracer.
+syntax: glob
+Library
+Temp
+*.pidb
+*.sln
+*.userprefs
+*.csprog
+*.orig
+# Don't know what all of that stuff below is. But I won't mess with it
+#====================================
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
