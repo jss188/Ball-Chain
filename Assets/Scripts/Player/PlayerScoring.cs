@@ -5,10 +5,13 @@ using UnityEngine;
 
 public class PlayerScoring : MonoBehaviour {
 
+	public int score = 0;
 	public int orbsCollected = 0;
 
-	public void AddOrb() {
+	public int AddOrb() {
 		orbsCollected++;
+		score += orbsCollected;
+		return orbsCollected;
 	}
 
 	public void DropChain() {

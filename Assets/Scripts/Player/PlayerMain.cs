@@ -38,8 +38,8 @@ public class PlayerMain : MonoBehaviour {
 	}
 
 	void Respawn() {
-		gameObject.SetActive(true);
 		transform.position = MultiplayerManagement.GetRespawnPosition();
 		movement.rigid.velocity = Vector3.zero;
+		gameObject.SetActive(true);
 	}
 }

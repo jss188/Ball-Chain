@@ -18,8 +18,11 @@ public class MultiplayerManagement : MonoBehaviour {
 
 	public Color[] playerColors = new Color[]{Color.red, Color.yellow, Color.magenta};
 
+	private HUDManager hud;
+
 	void Awake() {
 		main = this; //Poorly implemented singleton thing, I guess.
+		hud = FindObjectOfType<HUDManager>();
 	}
 
 	void Start() {
@@ -36,8 +39,10 @@ public class MultiplayerManagement : MonoBehaviour {
 	public void CreatePlayer() {
 		PlayerMain player = Instantiate(playerPrefab, spawnLocations[SelectSpawnPointIndex()].position, Quaternion.identity);
 		player.playerNumber = players.Count;
-		player.playerColor = playerColors[ Random.Range(0, playerColors.Length) ]; //Random.ColorHSV(0,1);
+		player.playerColor = playerColors[ Random.Range(0, playerColors.Length) ];
 		players.Add(player);
+
+		hud.CreateNameTagForPlayer(player);
 	}
 
 	public static Vector3 GetRespawnPosition() {

@@ -57,8 +57,9 @@ public class Orb : MonoBehaviour {
 	}
 	
 	public void CollectOrb(PlayerScoring playerScoring) {
-		playerScoring.AddOrb();
+		int pointValue = playerScoring.AddOrb();
 		OrbSFXManager.PlayOrbPickUpSound();
 		Destroy(gameObject);
+		OrbManager.Place3DText(transform.position, pointValue);
 	}
 }
