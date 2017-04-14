@@ -17,10 +17,10 @@ public class Orb : MonoBehaviour {
 	}
 
 	void Update () {
-		if(playerNumber < 0)
-			text.text = string.Empty;
-		else
-			text.text = string.Format("P{0}",playerNumber+1);
+		//if(playerNumber < 0)
+		//	text.text = string.Empty;
+		//else
+		//	text.text = string.Format("P{0}",playerNumber+1);
 
 		Debug.DrawLine(transform.position, transform.position + velocity, Color.green);
 
@@ -44,10 +44,20 @@ public class Orb : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider col) {
-		CollectOrb();
+		if(col.CompareTag("Player"))
+			CollectOrb(col.gameObject.GetComponent<PlayerScoring>());
+	}
+
+	void OnCollisionEnter(Collision col) {
+		if(col.collider.CompareTag("Orb Collector")) {
+			MultiplayerManagement.GetPlayer(playerNumber).scoring.DropChain();
+			OrbSFXManager.PlayOrbDropSound();
+			Destroy(gameObject);
+		}
 	}
 	
-	public void CollectOrb() {
+	public void CollectOrb(PlayerScoring playerScoring) {
+		playerScoring.AddOrb();
 		OrbSFXManager.PlayOrbPickUpSound();
 		Destroy(gameObject);
 	}

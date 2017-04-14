@@ -9,6 +9,7 @@ public class Bullet : MonoBehaviour {
 	public int playerNumber = -1;
 
 	public float playerPushAmount = 1f;
+	public float stunAmount = 1f;
 
 	void Awake() {
 		Destroy(gameObject, lifeTime);
@@ -25,7 +26,9 @@ public class Bullet : MonoBehaviour {
 			enemy.lastHarmed = playerNumber;
 		}
 		if(col.gameObject.layer == LayerMask.NameToLayer("Player")) {
-			col.gameObject.GetComponent<Rigidbody>().AddForce(transform.up * playerPushAmount, ForceMode.VelocityChange);
+			PlayerMain hitPlayer = col.gameObject.GetComponent<PlayerMain>();
+			Vector3 pushBackForce = transform.up * playerPushAmount * hitPlayer.scoring.HitMultiplier();
+			hitPlayer.movement.PushBackPlayer(pushBackForce, stunAmount);
 		}
 
 		Destroy(gameObject);

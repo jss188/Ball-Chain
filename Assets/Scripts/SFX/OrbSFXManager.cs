@@ -4,18 +4,26 @@ using UnityEngine;
 
 public class OrbSFXManager : MonoBehaviour {
 
-	public AudioSource orbPickUpSound;
 	private static OrbSFXManager main;
+
+	public AudioSource orbPickUpSound;
+	public AudioClip pickUpOrbSound, dropOrbSound;
 
 	void Awake() {
 		main = this;
 	}
 
 	public static void PlayOrbPickUpSound() {
-		main.PlayOrbPickUpSoundInstance();
+		main.orbPickUpSound.clip = main.pickUpOrbSound;
+		main.PlayOrbSoundInstance();
 	}
 
-	public void PlayOrbPickUpSoundInstance() {
+	public static void PlayOrbDropSound() {
+		main.orbPickUpSound.clip = main.dropOrbSound;
+		main.PlayOrbSoundInstance();
+	}
+
+	public void PlayOrbSoundInstance() {
 		orbPickUpSound.Stop();
 		orbPickUpSound.Play();
 	}

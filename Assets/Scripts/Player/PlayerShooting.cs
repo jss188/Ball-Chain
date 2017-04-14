@@ -63,6 +63,7 @@ public class PlayerShooting : MonoBehaviour {
 		bulletObj.transform.rotation = transform.rotation;
 		bulletObj.transform.Rotate(90, 0, 0, Space.Self);
 		bulletObj.playerNumber = main.playerNumber;
+		bulletObj.GetComponent<Renderer>().material.SetColor("_TintColor", main.playerColor);
 		Physics.IgnoreCollision(GetComponent<CapsuleCollider>(), bulletObj.GetComponent<Collider>(), true);
 		ShootSound();
 		//NetworkServer.Spawn(bulletObj.gameObject);

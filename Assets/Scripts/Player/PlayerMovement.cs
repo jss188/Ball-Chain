@@ -16,6 +16,9 @@ public class PlayerMovement : MonoBehaviour {
 	public float maxGroundCheckDistance = 10f;
 	public LayerMask groundCheckMask;
 
+	public bool stunned = false;
+	public float stunTimer = 0;
+
 	void Awake() {
 		main = GetComponent<PlayerMain>();
 		rigid = GetComponent<Rigidbody>();
@@ -25,7 +28,8 @@ public class PlayerMovement : MonoBehaviour {
 		InputData input = VirtualControlManager.SampleInput(main.playerNumber);
 		Vector3 moveVector = new Vector3(input.Horizontal, 0f, input.Vertical);
 		moveVector = Vector3.ClampMagnitude(moveVector, 1f);
-		rigid.velocity = moveVector * moveSpeed;
+		if(!stunned)
+			rigid.velocity = moveVector * moveSpeed;
 	}
 
 	void Update() {
@@ -33,5 +37,20 @@ public class PlayerMovement : MonoBehaviour {
 		if(Physics.Raycast(transform.position, Vector3.down, out hit, maxGroundCheckDistance, groundCheckMask)) {
 			transform.position = hit.point + Vector3.up;
 		}
+
+		//Stun Timer
+		stunned = stunTimer > 0;
+		if(stunTimer > 0)
+			stunTimer -= Time.deltaTime;
+
+	}
+
+	public void PushBackPlayer(Vector3 force, float stunAmount) {
+		rigid.AddForce(force, ForceMode.VelocityChange);
+		StunPlayer(stunAmount);
+	}
+
+	public void StunPlayer(float stunAmount) {
+		stunTimer = stunAmount;
 	}
 }

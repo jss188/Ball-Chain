@@ -15,5 +15,7 @@ public class OrbManager : MonoBehaviour {
 		Vector3 newPos = new Vector3(position.x, Mathf.Max(position.y, 0f), position.z);
 		Orb orb = Instantiate(orbPrefab, newPos, Quaternion.identity * Quaternion.AngleAxis(90, Vector3.right)) as Orb;
 		orb.playerNumber = playerNumber;
+		MeshRenderer orbRend =  orb.GetComponent<MeshRenderer>();
+		orbRend.material.SetColor("_TintColor", MultiplayerManagement.GetPlayer(playerNumber).playerColor);
 	}
 }
