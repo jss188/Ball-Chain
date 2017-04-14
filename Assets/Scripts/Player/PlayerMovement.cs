@@ -7,8 +7,8 @@ public enum AimMode { Mouse, Joystick }
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour {
 
-	private PlayerMain main;
-	private Rigidbody rigid;
+	public PlayerMain main;
+	public Rigidbody rigid;
 
 	public float moveSpeed = 10f;
 

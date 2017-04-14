@@ -24,4 +24,22 @@ public class PlayerMain : MonoBehaviour {
 		VirtualControlManager.SetupDefaultControls(playerNumber);
 		vfx.SetVFXColors(playerColor);
 	}
+
+	void OnCollisionEnter(Collision col) {
+		if(col.collider.CompareTag("Orb Collector")) {
+			Kill();
+			scoring.DropChain();
+		}
+	}
+
+	void Kill() {
+		gameObject.SetActive(false);
+		Invoke("Respawn", 3);
+	}
+
+	void Respawn() {
+		gameObject.SetActive(true);
+		transform.position = MultiplayerManagement.GetRespawnPosition();
+		movement.rigid.velocity = Vector3.zero;
+	}
 }
