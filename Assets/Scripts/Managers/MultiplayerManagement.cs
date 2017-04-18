@@ -20,6 +20,10 @@ public class MultiplayerManagement : MonoBehaviour {
 
 	private HUDManager hud;
 
+	public int testInitPlayerCount = 8;
+
+	public float gameTime = 100f;
+
 	void Awake() {
 		main = this; //Poorly implemented singleton thing, I guess.
 		hud = FindObjectOfType<HUDManager>();
@@ -27,13 +31,27 @@ public class MultiplayerManagement : MonoBehaviour {
 
 	void Start() {
 		if (gameState == GameState.Running) {
-			CreatePlayer();
-			CreatePlayer();
+			for(int i = 0; i < testInitPlayerCount; i++)
+				CreatePlayer();
 		}
 	}
 
 	void Update() {
 		playerCount = players.Count;
+
+		if(gameState == GameState.Running)
+			MatchUpdate();
+
+	}
+
+	public void MatchUpdate() {
+		gameTime -= Time.deltaTime;
+
+		hud.UpdateHUDMatchTimer(this);
+		hud.UpdateHUDTop5Leaderboard(this);
+
+		if(gameTime <= 0f)
+			gameState = GameState.GameEnded;
 	}
 
 	public void CreatePlayer() {

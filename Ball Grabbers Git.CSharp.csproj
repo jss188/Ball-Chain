@@ -120,6 +120,7 @@
     <Compile Include="Assets\Scripts\Enemy\EnemyHealth.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyPlacer.cs" />
     <Compile Include="Assets\Scripts\Input\VirtualControlManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\GameplayManager.cs" />
     <Compile Include="Assets\Scripts\Managers\MultiplayerManagement.cs" />
     <Compile Include="Assets\Scripts\Music\MusicSelector.cs" />
     <Compile Include="Assets\Scripts\Objects\Bullet.cs" />
