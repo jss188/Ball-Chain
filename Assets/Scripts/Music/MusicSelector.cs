@@ -11,6 +11,10 @@ public class MusicSelector : MonoBehaviour {
 
 	void Awake() {
 		musicPlayer = GetComponent<AudioSource>();
+		musicPlayer.Stop();
+	}
+
+	public void SelectTrackAndPlay() {
 		if(musicTracks.Length > 0) {
 			musicPlayer.clip = musicTracks[ Random.Range(0, musicTracks.Length) ];
 			musicPlayer.Play();

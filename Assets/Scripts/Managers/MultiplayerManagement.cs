@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum GameState { WaitForStart, Running, GameEnded }
 public class MultiplayerManagement : MonoBehaviour {
@@ -14,7 +15,7 @@ public class MultiplayerManagement : MonoBehaviour {
 	public static List<PlayerMain> players = new List<PlayerMain>();
 	public int playerCount;
 
-	public GameState gameState = GameState.Running;
+	public GameState gameState = GameState.WaitForStart;
 
 	public Color[] playerColors = new Color[]{Color.red, Color.yellow, Color.magenta};
 
@@ -24,24 +25,77 @@ public class MultiplayerManagement : MonoBehaviour {
 
 	public float gameTime = 100f;
 
+	private MusicSelector musicPlayer;
+
+	public int StartMatchCountDownSeconds = 5;
+	private bool endingMatch = false;
+
 	void Awake() {
 		main = this; //Poorly implemented singleton thing, I guess.
 		hud = FindObjectOfType<HUDManager>();
+		musicPlayer = GetComponentInChildren<MusicSelector>();
 	}
 
 	void Start() {
-		if (gameState == GameState.Running) {
-			for(int i = 0; i < testInitPlayerCount; i++)
-				CreatePlayer();
-		}
+		//StartCoroutine(StartMatchCountDown(StartMatchCountDownSeconds));
+		hud.ShowGiantTextMessage("Press ~ to start match!", 1f, 10f, 1f);
 	}
 
 	void Update() {
 		playerCount = players.Count;
 
-		if(gameState == GameState.Running)
-			MatchUpdate();
+		switch(gameState) {
 
+			case GameState.WaitForStart:
+				if(Input.GetKeyDown(KeyCode.BackQuote))
+					StartCoroutine(StartMatchCountDown(StartMatchCountDownSeconds));
+				break;
+
+			case GameState.Running:
+				MatchUpdate();
+				break;
+
+			case GameState.GameEnded:
+				if(!endingMatch) {
+					EndMatch();
+				}
+				break;
+		}
+
+	}
+
+	IEnumerator StartMatchCountDown(int matchCountDownSeconds) {
+		int countDown = matchCountDownSeconds;
+		while (countDown > 0) {
+			hud.ShowGiantTextMessage(countDown.ToString(), 0, 0.7f, 0.2f);
+			countDown--;
+			yield return new WaitForSeconds(1);
+		}
+
+		hud.ShowGiantTextMessage("GO!", 0, 0.7f, 0.2f);
+
+		StartMatch();
+	}
+
+	void StartMatch() {
+		musicPlayer.SelectTrackAndPlay();
+		gameState = GameState.Running;
+
+		ResetManager();
+
+		for (int i = 0; i < testInitPlayerCount; i++) {
+			CreatePlayer();
+		}
+	}
+
+	void ResetManager() {
+		players = new List<PlayerMain>();
+		CurrentSpawnLocation = 0;
+	}
+
+	void EndMatch() {
+		endingMatch = true;
+		LoadingFade.LoadScreen(1f, delegate { SceneManager.LoadScene("MainMenu"); });
 	}
 
 	public void MatchUpdate() {

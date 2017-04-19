@@ -11,6 +11,10 @@ public class HUDManager : MonoBehaviour {
 	public Text matchTimerText;
 	public Text top5Text;
 
+	public Text giantText;
+	public Color giantTextColor;
+	private Coroutine currentGiantTextMessage;
+
 	public void CreateNameTagForPlayer(PlayerMain player) {
 		PlayerNameTag nameTag = Instantiate(nameTagPrefab, bottomBar);
 		nameTag.transform.ResetTransform();
@@ -28,9 +32,13 @@ public class HUDManager : MonoBehaviour {
 	public string float2Time(float floatTime) {
 		int minutes = (int)floatTime / 60;
 		int seconds = (int)floatTime % 60;
-		//string milliseconds = (floatTime - (int)floatTime).ToString(F);
+		int milliseconds = (int)((floatTime % 1f) * 1000f);
 
-		return string.Format("{0}:{1}", minutes.ToString().PadLeft(2,'0'), seconds.ToString().PadLeft(2,'0'));
+		return string.Format("{0}:{1}:{2}", minutes.ToString().PadLeft(2,'0'), seconds.ToString().PadLeft(2,'0'), milliseconds.ToString().PadLeft(3,'0'));
+
+		//int seconds = (int)floatTime; 
+		//return string.Format("{0}:{1}", seconds.ToString().PadLeft(2,'0'), milliseconds.ToString().PadLeft(3,'0'));
+
 	}
 
 	public string getTop5PlayersText(MultiplayerManagement gameManager) {
@@ -49,6 +57,41 @@ public class HUDManager : MonoBehaviour {
 		}
 
 		return leaderBoardText;
+	}
+
+	public void ShowGiantTextMessage(string message, float fadeInTime, float holdTime, float fadeOutTime) {
+		if(currentGiantTextMessage != null)
+			StopCoroutine(currentGiantTextMessage);
+		currentGiantTextMessage = StartCoroutine(GiantTextMessage(fadeInTime, holdTime, fadeOutTime, message));
+	}
+
+	IEnumerator GiantTextMessage(float fadeInTime, float holdTime, float fadeOutTime, string message) {
+		giantText.gameObject.SetActive(true);
+		giantText.text = message;
+		giantText.color = Color.clear;
+
+		float timer = 0f;
+		//Fade In
+		while (timer < fadeInTime) {
+			timer += Time.deltaTime;
+			giantText.color = Color.Lerp(Color.clear, giantTextColor, timer/fadeInTime);
+			yield return new WaitForEndOfFrame();
+		}
+
+		//Hold
+		giantText.color = giantTextColor;
+		yield return new WaitForSeconds(holdTime);
+
+		//Fade Out
+		timer = 0;
+		while (timer < fadeOutTime) {
+			timer += Time.deltaTime;
+			giantText.color = Color.Lerp(giantTextColor, Color.clear, timer/fadeOutTime);
+			yield return new WaitForEndOfFrame();
+		}
+
+		giantText.color = Color.clear;
+		giantText.gameObject.SetActive(false);
 	}
 
 }
