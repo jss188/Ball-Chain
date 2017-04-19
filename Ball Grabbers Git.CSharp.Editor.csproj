@@ -208,6 +208,7 @@
     <None Include="Assets\Additional Assets\Standard Assets\ParticleSystems\Shaders\PriorityParticleAdd.shader" />
     <None Include="Assets\Additional Assets\Standard Assets\ParticleSystems\Shaders\PriorityParticleAddSoft.shader" />
     <None Include="Assets\Additional Assets\Standard Assets\ParticleSystems\Shaders\PriorityParticleAlpha.shader" />
+    <None Include="Assets\Effects\RayForceIntroShader.shader" />
     <None Include="Assets\cMonkeys\cInput\Documentation\changelog.txt" />
     <None Include="Assets\cMonkeys\cInput\Documentation\readme (seriously).txt" />
   </ItemGroup>

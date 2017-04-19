@@ -117,12 +117,16 @@
     <Compile Include="Assets\Additional Assets\Standard Assets\Effects\ImageEffects\Scripts\Twirl.cs" />
     <Compile Include="Assets\Additional Assets\Standard Assets\Effects\ImageEffects\Scripts\VignetteAndChromaticAberration.cs" />
     <Compile Include="Assets\Additional Assets\Standard Assets\Effects\ImageEffects\Scripts\Vortex.cs" />
+    <Compile Include="Assets\Effects\LoadingFade.cs" />
+    <Compile Include="Assets\Effects\SimpleBlit.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyHealth.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyPlacer.cs" />
     <Compile Include="Assets\Scripts\Input\VirtualControlManager.cs" />
     <Compile Include="Assets\Scripts\Managers\GameplayManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\MainMenuManager.cs" />
     <Compile Include="Assets\Scripts\Managers\MultiplayerManagement.cs" />
     <Compile Include="Assets\Scripts\Music\MusicSelector.cs" />
+    <Compile Include="Assets\Scripts\Music\OptionsMenuManager.cs" />
     <Compile Include="Assets\Scripts\Objects\Bullet.cs" />
     <Compile Include="Assets\Scripts\Objects\Orb.cs" />
     <Compile Include="Assets\Scripts\Objects\OrbManager.cs" />
@@ -136,6 +140,7 @@
     <Compile Include="Assets\Scripts\Player\PlayerVFX.cs" />
     <Compile Include="Assets\Scripts\SFX\OrbSFXManager.cs" />
     <Compile Include="Assets\Scripts\UI\HUDManager.cs" />
+    <Compile Include="Assets\Scripts\UI\OptionsMenu\OptionsMenuButton.cs" />
     <Compile Include="Assets\Scripts\UI\PlayerNameTag.cs" />
     <Compile Include="Assets\Scripts\Utilities\ColorPulse.cs" />
     <Compile Include="Assets\Scripts\Utilities\KillAfterTime.cs" />
@@ -234,6 +239,7 @@
     <None Include="Assets\Additional Assets\Standard Assets\ParticleSystems\Shaders\PriorityParticleAdd.shader" />
     <None Include="Assets\Additional Assets\Standard Assets\ParticleSystems\Shaders\PriorityParticleAddSoft.shader" />
     <None Include="Assets\Additional Assets\Standard Assets\ParticleSystems\Shaders\PriorityParticleAlpha.shader" />
+    <None Include="Assets\Effects\RayForceIntroShader.shader" />
     <None Include="Assets\cMonkeys\cInput\Documentation\changelog.txt" />
     <None Include="Assets\cMonkeys\cInput\Documentation\readme (seriously).txt" />
   </ItemGroup>

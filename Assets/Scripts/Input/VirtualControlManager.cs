@@ -9,12 +9,24 @@ public static class VirtualControlManager {
 	public static float defaultAxisSensitivity = 1000f;
 	public static float defaultAxisGravity = 1000f;
 	public static float defaultAxisDeadzone = 0.15f;
+	public static string[] inputNames = { "Up","Down","Left","Right","AimUp","AimDown","AimLeft","AimRight","Fire1","Fire2","Menu" };
 
 	public static void SetupDefaultControls(int playerNumber) {
 		//Don't setup controls if already done.
 		if (SetupPlayers.Contains(playerNumber))
 			return;
 
+		//Setup Default controls
+		if(playerNumber == 0)
+			ResetControlsToDefault(playerNumber);
+		else
+			ClearAllControlsForPlayer(playerNumber);
+
+		//Mark player as setup
+		SetupPlayers.Add(playerNumber);
+	}
+
+	public static void ResetControlsToDefault(int playerNumber) {
 		//Movement
 		cInput.SetKey("Up" + playerNumber, Keys.W);
 		cInput.SetKey("Down" + playerNumber, Keys.S);
@@ -38,9 +50,22 @@ public static class VirtualControlManager {
 		cInput.SetKey("Fire2" + playerNumber, Keys.Mouse1);
 
 		cInput.SetKey("Menu" + playerNumber, Keys.Escape);
+	}
 
-		//Mark player as setup
-		SetupPlayers.Add(playerNumber);
+	public static void ClearAllControlsForPlayer(int playerNumber) {
+		foreach(string input in inputNames) {
+			cInput.SetKey(input + playerNumber, Keys.None);
+		}
+
+		cInput.SetAxis("Horizontal" + playerNumber, "Left"+playerNumber, "Right"+playerNumber, defaultAxisSensitivity, defaultAxisGravity, defaultAxisDeadzone);
+		cInput.SetAxis("Vertical" + playerNumber, "Down"+playerNumber, "Up"+playerNumber, defaultAxisSensitivity, defaultAxisGravity, defaultAxisDeadzone);
+
+		cInput.SetAxis("AimHorizontal" + playerNumber, "AimLeft"+playerNumber, "AimRight"+playerNumber, defaultAxisSensitivity, defaultAxisGravity, defaultAxisDeadzone);
+		cInput.SetAxis("AimVertical" + playerNumber, "AimDown"+playerNumber, "AimUp"+playerNumber, defaultAxisSensitivity, defaultAxisGravity, defaultAxisDeadzone);
+	}
+
+	public static void ResetAllPlayers() {
+		cInput.ResetInputs();
 	}
 
 	public static InputData SampleInput(int playerNumber) {
@@ -58,6 +83,7 @@ public static class VirtualControlManager {
 
 		return data;
 	}
+
 
 }
 
