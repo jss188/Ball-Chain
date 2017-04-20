@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class MusicSelector : MonoBehaviour {
 
-	private AudioSource musicPlayer;
+	public AudioSource musicPlayer;
 
 	public AudioClip[] musicTracks;
 

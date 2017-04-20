@@ -5,6 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour {
 
+	void Awake() {
+		VirtualControlManager.SetAllDefaultPlayerControls();
+	}
+
 	public void ExitGame() {
 		LoadingFade.LoadScreen(2f, delegate { Application.Quit(); });
 	}

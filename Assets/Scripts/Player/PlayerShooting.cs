@@ -21,6 +21,13 @@ public class PlayerShooting : MonoBehaviour {
 		rigid = GetComponent<Rigidbody>();
 	}
 
+	void Start() {
+		if(cInput.GetText("Fire1"+main.playerNumber).Contains("Mouse"))
+			aimMode = AimMode.Mouse;
+		else
+			aimMode = AimMode.Joystick;
+	}
+
 	void Update() {
 		InputData input = VirtualControlManager.SampleInput(main.playerNumber);
 
@@ -47,12 +54,20 @@ public class PlayerShooting : MonoBehaviour {
 		if(fireRateTimer > 0)
 			fireRateTimer -= Time.deltaTime;
 
-		if(input.Fire1 || (Input.GetKey(KeyCode.Alpha1) && main.playerNumber != 0)) {
+		if( canFire(input) ) {
+		//if(input.Fire1 || (Input.GetKey(KeyCode.Alpha1) && main.playerNumber != 0)) {
 			if(fireRateTimer <= 0f) {
 				FireBullet();
 				fireRateTimer = fireRate;
 			}
 		}
+	}
+
+	bool canFire(InputData input) {
+		if(aimMode == AimMode.Mouse)
+			return input.Fire1;
+		else
+			return input.AimHorizontal != 0 || input.AimVertical != 0;
 	}
 
 	public void FireBullet() {

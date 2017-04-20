@@ -14,12 +14,15 @@ public class OptionsMenuManager : MonoBehaviour {
 
 	public AudioMixer mixer;
 
+	public HiddenText[] hiddenCreditsTexts = new HiddenText[3];
+
 	public void MainMenu() {
 		ClearMenu();
 		CreateButton(GetQualitySettingsText(), NextQualityLevel, GetQualitySettingsText);
 		CreateButton(GetMusicVolume(), IncrementMusicVolume, GetMusicVolume);
 		CreateButton(GetSFXVolume(), IncrementSFXVolume, GetSFXVolume);
 		CreateButton("Set Controls", ControlsMenu);
+		CreateButton("Credits", CreditsMenu);
 		CreateButton("Close Options Menu", CloseOptionsMenu);
 	}
 
@@ -112,24 +115,28 @@ public class OptionsMenuManager : MonoBehaviour {
 			int pNumber = i+0;
 			CreateButton("Player "+(pNumber+1), delegate { PlayerControlMenu(pNumber); });
 		}
-		CreateButton("Reset All Inputs", VirtualControlManager.ResetAllPlayers);
+		CreateButton("Reset All Inputs", cInput.ResetInputs);
 		CreateButton("Back to Main Menu", MainMenu);
 	}
-
 	public void PlayerControlMenu(int playerNumber) {
 		ClearMenu();
 
-		OptionsMenuButton b = CreateButton("Set Controls for Player "+(playerNumber+1), delegate { });
-		b.button.onClick.AddListener( delegate { SetControlsForPlayer(playerNumber, b); } );
-		CreateButton("Reset Player " +(playerNumber+1)+" Controls", delegate { VirtualControlManager.ResetControlsToDefault(playerNumber); });
+		foreach(string inputName in VirtualControlManager.inputNames) {
+			OptionsMenuButton b = CreateButton(InputNameText(inputName, playerNumber), delegate { cInput.ChangeKey(inputName+playerNumber); });
+			b.alwaysUpdateTitle = true;
+			b.textUpdate = delegate { return InputNameText(inputName, playerNumber); };
+		}
 
-		CreateButton("Back to Controls Menu", ControlsMenu);
+		//OptionsMenuButton b = CreateButton("Set Controls for Player "+(playerNumber+1), delegate { });
+		//b.button.onClick.AddListener( delegate { SetControlsForPlayer(playerNumber, b); } );
+
+		//CreateButton("Reset All Controls", delegate { cInput.ResetInputs(); PlayerControlMenu(playerNumber); });
+
+		CreateButton("Back", ControlsMenu);
 	}
-
 	public void SetControlsForPlayer(int player, OptionsMenuButton button) {
 		StartCoroutine(ControlWizard(player, button));
 	}
-
 	public IEnumerator ControlWizard(int playerNumber, OptionsMenuButton button) {
 		VirtualControlManager.SetupDefaultControls(playerNumber);
 
@@ -149,6 +156,37 @@ public class OptionsMenuManager : MonoBehaviour {
 		}
 
 		button.text.text = "Set controls for player " + (playerNumber+1);
+	}
+	string InputNameText(string inputName, int playerNumber) {
+		if(cInput.scanning)
+			return "Scanning...";
+		return string.Format("{0} - {1}", inputName, cInput.GetText(inputName+playerNumber));
+	}
+
+	//Credits
+	public void CreditsMenu() {
+		ClearMenu();
+		CreateButton("Michael Starling", delegate { }, delegate { return GetHiddenText(0); });
+		CreateButton("Jacob Sy", delegate { }, delegate { return GetHiddenText(1); });
+		CreateButton("Jesse Pan", delegate { }, delegate { return GetHiddenText(2); });
+		CreateButton("Placeholder Music\nViper Phase I", delegate { });
+		CreateButton("Back to Main Menu", MainMenu);
+	}
+	string GetHiddenText(int textIndex) {
+		if(textIndex < 0 || hiddenCreditsTexts.Length < textIndex-1)
+			return string.Empty;
+
+		if(hiddenCreditsTexts[textIndex] != null && hiddenCreditsTexts[textIndex].hiddenText != null && hiddenCreditsTexts[textIndex].hiddenText.Length > 0)
+			return hiddenCreditsTexts[textIndex].hiddenText[Random.Range(0, hiddenCreditsTexts[textIndex].hiddenText.Length)];
+		else
+			return string.Empty;
+
+	}
+
+	[System.Serializable]
+	public class HiddenText {
+		public string name;
+		public string[] hiddenText;
 	}
 
 }

@@ -66,6 +66,28 @@ public static class VirtualControlManager {
 
 	public static void ResetAllPlayers() {
 		cInput.ResetInputs();
+		SetAllDefaultPlayerControls();
+	}
+
+	public static void SetAllDefaultPlayerControls() {
+		for (int i = 0; i < 4; i++)
+			SetupDefaultControls(i);
+		/**
+			for (int i = 0; i < 4; i++) {
+			//if(i == 0)
+				SetupDefaultControls(i);
+					//ResetControlsToDefault(i);
+			else
+				//ClearAllControlsForPlayer(i);
+		}
+		**/
+	}
+
+	public static void SetUpResetControls(int playerNumber) {
+		if(playerNumber == 0)
+			ResetControlsToDefault(playerNumber);
+		else
+			ClearAllControlsForPlayer(playerNumber);
 	}
 
 	public static InputData SampleInput(int playerNumber) {

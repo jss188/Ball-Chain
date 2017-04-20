@@ -9,14 +9,18 @@ public class EnemyPlacer : MonoBehaviour {
 
 	void Update() {
 		if(Input.GetKeyDown(KeyCode.Alpha2))
-			for(int i = 0; i < 10; i++) {
-				Vector3 randomPoint = new Vector3(
-					Random.Range(-spawnRange.x, spawnRange.x),
-					0f,
-					Random.Range(-spawnRange.y, spawnRange.y));
+			PlaceEnemies(10);
+	}
 
-				Instantiate(enemy, randomPoint, Quaternion.identity);
-			}
+	public void PlaceEnemies(int enemyCount) {
+		for(int i = 0; i < enemyCount; i++) {
+			Vector3 randomPoint = new Vector3(
+				Random.Range(-spawnRange.x, spawnRange.x),
+				0f,
+				Random.Range(-spawnRange.y, spawnRange.y));
+
+			Instantiate(enemy, randomPoint, Quaternion.identity);
+		}
 	}
 
 }

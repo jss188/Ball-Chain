@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,12 @@ public class HUDManager : MonoBehaviour {
 	public Text giantText;
 	public Color giantTextColor;
 	private Coroutine currentGiantTextMessage;
+
+	public PlayerJoinIndicator joinTag;
+	public RectTransform joinBar;
+	public RectTransform joinBarHolder;
+
+	public Text scoreTable;
 
 	public void CreateNameTagForPlayer(PlayerMain player) {
 		PlayerNameTag nameTag = Instantiate(nameTagPrefab, bottomBar);
@@ -94,6 +101,38 @@ public class HUDManager : MonoBehaviour {
 		giantText.gameObject.SetActive(false);
 	}
 
+	public void UpdatePlayerJoinIndicators(MultiplayerManagement gameManager) {
+		foreach (Transform child in joinBar)
+			Destroy(child.gameObject);
+
+		foreach (JoinPlayerData player in gameManager.joiningPlayers)
+			AddPlayerJoinIndicator(player);
+
+	}
+
+	public void AddPlayerJoinIndicator(JoinPlayerData player) {
+		PlayerJoinIndicator indic = Instantiate(joinTag, joinBar);
+		indic.transform.ResetTransform();
+		indic.title.text = "Player " + (player.playerNumber+1);
+		indic.outline.color = player.playerColor;
+	}
+
+	public void UpdateScoreTable() {
+		scoreTable.gameObject.SetActive(true);
+
+		List<PlayerMain> players = MultiplayerManagement.players;
+		players.Sort( (p1,p2)=> p2.scoring.score - p1.scoring.score );
+
+		StringBuilder result = new StringBuilder();
+		for(int i = 0; i < players.Count; i++) {
+			if(i == 0)
+				result.AppendLine( string.Format("<color={2}><b>Player {0} - {1} WINNER!</b></color>", players[i].playerNumber+1, players[i].scoring.score*10, ColorTypeConverter.ToRGBHex(players[i].playerColor)) );
+			else
+				result.AppendLine( string.Format("<color={2}>Player {0} - {1}</color>", players[i].playerNumber+1, players[i].scoring.score*10, ColorTypeConverter.ToRGBHex(players[i].playerColor)) );
+		}
+
+		scoreTable.text = result.ToString();
+	}
 }
 
 public static class Util {
