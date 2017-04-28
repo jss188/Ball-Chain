@@ -28,6 +28,8 @@ public class EnemyAI : MonoBehaviour {
 	private float waitTimer = 0;
 	private Vector3 moveTarget;
 	private bool moving = false;
+	private Vector3 moveDirection;
+	public bool mountain = false;
 
 	private Vector3 cancelY = new Vector3(1,0,1);
 
@@ -54,7 +56,9 @@ public class EnemyAI : MonoBehaviour {
 		if( nearest != null) {
 			if(PlayerWithinFleeRange(nearest)) {
 				//Find a direction to player
-				Vector3 moveDirection = (nearest.transform.position - transform.position).normalized;
+				Vector3 tempDirection = (nearest.transform.position - transform.position).normalized;
+				if (!Physics.Raycast (rigid.position, tempDirection, whiskerMaxRange) || mountain)
+					moveDirection = tempDirection;
 				moveDirection = WhiskerPathCheck(moveDirection, whiskerAngle);
 				moveDirection = Vector3.ProjectOnPlane (moveDirection, Vector3.up);
 
