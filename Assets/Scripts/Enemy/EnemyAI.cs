@@ -29,6 +29,8 @@ public class EnemyAI : MonoBehaviour {
 	private Vector3 moveTarget;
 	private bool moving = false;
 
+	private Vector3 cancelY = new Vector3(1,0,1);
+
 	void Awake() {
 		rigid = GetComponent<Rigidbody>();
 	}
@@ -60,7 +62,7 @@ public class EnemyAI : MonoBehaviour {
 				moveDirection = chasing ? moveDirection : -moveDirection;
 
 				//Go in this direction.
-				rigid.velocity = moveDirection * moveSpeed + new Vector3(0,rigid.velocity.y,0);
+				rigid.velocity = Vector3.Scale(moveDirection * moveSpeed, cancelY) + new Vector3(0,rigid.velocity.y,0);
 				Debug.DrawLine(transform.position, transform.position + moveDirection * 5, Color.green);
 			}
 			//No player nearby. Resume roaming.
@@ -81,7 +83,7 @@ public class EnemyAI : MonoBehaviour {
 		if(moving) {
 			Vector3 moveDirection = (moveTarget - transform.position).normalized;
 			moveDirection = WhiskerPathCheck(moveDirection, whiskerAngle);
-			rigid.velocity = moveDirection * moveSpeed;
+			rigid.velocity = Vector3.Scale(moveDirection * moveSpeed, cancelY) + new Vector3(0,rigid.velocity.y,0);//moveDirection * moveSpeed;
 			StopWhenDestinationReached();
 		}
 

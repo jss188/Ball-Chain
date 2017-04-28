@@ -123,6 +123,11 @@
     <Compile Include="Assets\Scripts\Enemy\EnemyHealth.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyPlacer.cs" />
     <Compile Include="Assets\Scripts\Input\VirtualControlManager.cs" />
+    <Compile Include="Assets\Scripts\LevelGenerator\Arena.cs" />
+    <Compile Include="Assets\Scripts\LevelGenerator\Boundary.cs" />
+    <Compile Include="Assets\Scripts\LevelGenerator\MapGenerator.cs" />
+    <Compile Include="Assets\Scripts\LevelGenerator\Wall.cs" />
+    <Compile Include="Assets\Scripts\LevelGenerator\WallGroup.cs" />
     <Compile Include="Assets\Scripts\Managers\GameplayManager.cs" />
     <Compile Include="Assets\Scripts\Managers\MainMenuManager.cs" />
     <Compile Include="Assets\Scripts\Managers\MultiplayerManagement.cs" />
