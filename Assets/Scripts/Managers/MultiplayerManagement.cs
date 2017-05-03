@@ -247,7 +247,12 @@ public class MultiplayerManagement : MonoBehaviour {
 	}
 
 	public static PlayerMain GetPlayer(int playerName) {
-		return players[playerName];
+		foreach (var player in players) {
+			if (player.playerNumber == playerName)
+				return player;
+		}
+		return null;
+		//return players[playerName];
 	}
 
 	IEnumerator showScoresAndEndMatch () {
