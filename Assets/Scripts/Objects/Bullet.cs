@@ -27,7 +27,7 @@ public class Bullet : MonoBehaviour {
 		}
 		if(col.gameObject.layer == LayerMask.NameToLayer("Player")) {
 			PlayerMain hitPlayer = col.gameObject.GetComponent<PlayerMain>();
-			Vector3 pushBackForce = transform.up * playerPushAmount * hitPlayer.scoring.HitMultiplier();
+			Vector3 pushBackForce = transform.up * playerPushAmount * hitPlayer.scoring.HitMultiplier() * 0.1f;
 			hitPlayer.movement.PushBackPlayer(pushBackForce, stunAmount);
 		}
 
